@@ -20,8 +20,8 @@ import {
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Landing.css";
 
+import "./Landing.css";
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -32,11 +32,15 @@ function LandingPage() {
 
   const handleHeroPointer = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+
+    const x =
+      ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+
+    const y =
+      ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+
     setHeroPointer({ x, y });
   };
-
 
   /* ==========================================================
      HOME
@@ -50,7 +54,6 @@ function LandingPage() {
       behavior: "smooth",
     });
   };
-
 
   /* ==========================================================
      SECTION NAVIGATION
@@ -69,7 +72,6 @@ function LandingPage() {
     }, 50);
   };
 
-
   /* ==========================================================
      OPEN INFORMATION PANEL
   ========================================================== */
@@ -82,7 +84,6 @@ function LandingPage() {
       behavior: "instant",
     });
   };
-
 
   /* ==========================================================
      CLOSE INFORMATION PANEL
@@ -97,19 +98,15 @@ function LandingPage() {
     });
   };
 
-
   return (
     <div className="landing-page">
-
 
       {/* ======================================================
           NAVBAR
       ====================================================== */}
 
       <header className="landing-navbar">
-
         <div className="landing-navbar-inner">
-
 
           {/* BRAND */}
 
@@ -119,7 +116,6 @@ function LandingPage() {
             onClick={goHome}
             aria-label="Go to home"
           >
-
             <span className="landing-brand-mark">
               M
             </span>
@@ -127,9 +123,7 @@ function LandingPage() {
             <span className="landing-brand-name">
               micron
             </span>
-
           </button>
-
 
           {/* NAVIGATION */}
 
@@ -142,14 +136,12 @@ function LandingPage() {
               Home
             </button>
 
-
             <button
               type="button"
               onClick={() => goToSection("about")}
             >
               About Us
             </button>
-
 
             <button
               type="button"
@@ -160,7 +152,6 @@ function LandingPage() {
 
           </nav>
 
-
           {/* LOGIN */}
 
           <button
@@ -168,81 +159,63 @@ function LandingPage() {
             className="landing-login-button"
             onClick={() => navigate("/login")}
           >
-
             Login
 
             <ArrowRight size={15} />
-
           </button>
 
         </div>
-
       </header>
-
 
       {/* ======================================================
           INFORMATION PANEL
       ====================================================== */}
 
       {activePanel && (
-
         <div className="information-panel">
-
 
           {/* PANEL TOP BAR */}
 
           <div className="information-panel-navbar">
-
             <div className="information-panel-navbar-inner">
-
 
               <button
                 type="button"
                 className="information-panel-brand"
                 onClick={closePanel}
               >
-
                 <span>
                   M
                 </span>
 
                 micron
-
               </button>
-
 
               <button
                 type="button"
                 className="information-back-button"
                 onClick={closePanel}
               >
-
                 <ArrowLeft size={15} />
 
                 Back to Home
-
               </button>
 
             </div>
-
           </div>
-
 
           {/* ==================================================
               COMPANY PROFILE
           ================================================== */}
 
           {activePanel === "company" && (
-
             <main className="information-content">
-
 
               <section className="information-hero">
 
                 <div className="information-hero-background" />
 
                 <div className="information-hero-overlay" />
-
 
                 <div className="information-hero-content">
 
@@ -263,11 +236,9 @@ function LandingPage() {
 
               </section>
 
-
               <section className="information-body">
 
                 <div className="information-container">
-
 
                   <div className="information-heading">
 
@@ -283,50 +254,37 @@ function LandingPage() {
 
                   </div>
 
-
                   <div className="information-two-column">
-
 
                     <div className="information-copy">
 
                       <p className="information-lead">
-
                         Micron is a global leader in memory
                         and storage solutions, helping transform
                         how information is created, accessed
                         and used.
-
                       </p>
 
-
                       <p>
-
                         Micron's technology supports a broad
                         range of applications across data
                         centers, intelligent computing,
                         mobile devices, automotive systems
                         and emerging technologies.
-
                       </p>
 
-
                       <p>
-
                         Behind that technology are teams of
                         engineers, researchers and professionals
                         working together to solve complex
                         challenges and build what comes next.
-
                       </p>
 
                     </div>
 
-
                     <div className="information-side">
 
-
                       <div className="information-card">
-
                         <Building2 size={19} />
 
                         <span>
@@ -336,12 +294,9 @@ function LandingPage() {
                         <strong>
                           Micron Technology, Inc.
                         </strong>
-
                       </div>
 
-
                       <div className="information-card">
-
                         <Globe2 size={19} />
 
                         <span>
@@ -352,12 +307,9 @@ function LandingPage() {
                           Technology and teams
                           around the world
                         </strong>
-
                       </div>
 
-
                       <div className="information-card">
-
                         <Users size={19} />
 
                         <span>
@@ -368,13 +320,11 @@ function LandingPage() {
                           Innovation driven by
                           exceptional teams
                         </strong>
-
                       </div>
 
                     </div>
 
                   </div>
-
 
                   {/* OFFICIAL WEBSITE */}
 
@@ -391,33 +341,25 @@ function LandingPage() {
                       </strong>
 
                     </div>
-
-
-                    <a
-                      href="https://www.micron.com/about/company/corporate-profile"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-
+<a
+  href="https://www.micron.com/about/company/corporate-profile"
+  className="landing-contact-link"
+>
                       Open official profile
 
                       <ArrowUpRight size={14} />
-
                     </a>
 
                   </div>
-
 
                   <button
                     type="button"
                     className="large-back-button"
                     onClick={closePanel}
                   >
-
                     <ArrowLeft size={15} />
 
                     Back to Home
-
                   </button>
 
                 </div>
@@ -425,25 +367,20 @@ function LandingPage() {
               </section>
 
             </main>
-
           )}
-
 
           {/* ==================================================
               LOCATIONS
           ================================================== */}
 
           {activePanel === "locations" && (
-
             <main className="information-content">
-
 
               <section className="information-hero">
 
                 <div className="information-hero-background" />
 
                 <div className="information-hero-overlay" />
-
 
                 <div className="information-hero-content">
 
@@ -464,11 +401,9 @@ function LandingPage() {
 
               </section>
 
-
               <section className="information-body">
 
                 <div className="information-container">
-
 
                   <div className="information-heading">
 
@@ -484,9 +419,7 @@ function LandingPage() {
 
                   </div>
 
-
                   <div className="location-information-grid">
-
 
                     <article className="location-information-card">
 
@@ -509,7 +442,6 @@ function LandingPage() {
 
                     </article>
 
-
                     <article className="location-information-card">
 
                       <div className="location-information-icon">
@@ -531,7 +463,6 @@ function LandingPage() {
                       </p>
 
                     </article>
-
 
                     <article className="location-information-card">
 
@@ -556,7 +487,6 @@ function LandingPage() {
 
                   </div>
 
-
                   <div className="official-information-link">
 
                     <div>
@@ -571,32 +501,25 @@ function LandingPage() {
 
                     </div>
 
-
                     <a
-                      href="https://www.micron.com/about/locations"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-
+  href="https://www.micron.com/about/locations"
+  className="landing-contact-link"
+>
                       View official locations
 
                       <ArrowUpRight size={14} />
-
                     </a>
 
                   </div>
-
 
                   <button
                     type="button"
                     className="large-back-button"
                     onClick={closePanel}
                   >
-
                     <ArrowLeft size={15} />
 
                     Back to Home
-
                   </button>
 
                 </div>
@@ -604,25 +527,20 @@ function LandingPage() {
               </section>
 
             </main>
-
           )}
-
 
           {/* ==================================================
               CONTACT
           ================================================== */}
 
           {activePanel === "contact" && (
-
             <main className="information-content">
-
 
               <section className="information-hero">
 
                 <div className="information-hero-background" />
 
                 <div className="information-hero-overlay" />
-
 
                 <div className="information-hero-content">
 
@@ -643,11 +561,9 @@ function LandingPage() {
 
               </section>
 
-
               <section className="information-body">
 
                 <div className="information-container">
-
 
                   <div className="information-heading">
 
@@ -663,9 +579,7 @@ function LandingPage() {
 
                   </div>
 
-
                   <div className="location-information-grid">
-
 
                     <article className="location-information-card">
 
@@ -685,21 +599,16 @@ function LandingPage() {
                         Access official contact resources
                         for general enquiries.
                       </p>
-
-                      <a
-                        href="https://www.micron.com/sales-support"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-
+<a
+  href="https://www.micron.com/sales-support"
+  className="landing-contact-link"
+>
                         Contact resources
 
                         <ArrowUpRight size={14} />
-
                       </a>
 
                     </article>
-
 
                     <article className="location-information-card">
 
@@ -725,15 +634,12 @@ function LandingPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-
                         Sales & Support
 
                         <ArrowUpRight size={14} />
-
                       </a>
 
                     </article>
-
 
                     <article className="location-information-card">
 
@@ -759,28 +665,23 @@ function LandingPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-
                         Visit Micron
 
                         <ArrowUpRight size={14} />
-
                       </a>
 
                     </article>
 
                   </div>
 
-
                   <button
                     type="button"
                     className="large-back-button"
                     onClick={closePanel}
                   >
-
                     <ArrowLeft size={15} />
 
                     Back to Home
-
                   </button>
 
                 </div>
@@ -788,9 +689,7 @@ function LandingPage() {
               </section>
 
             </main>
-
           )}
-
 
           {/* PANEL FOOTER */}
 
@@ -810,20 +709,15 @@ function LandingPage() {
           </footer>
 
         </div>
-
       )}
-
 
       {/* ======================================================
           NORMAL LANDING PAGE
       ====================================================== */}
 
       {!activePanel && (
-
         <>
-
           <main>
-
 
             {/* =================================================
                 HERO
@@ -833,7 +727,9 @@ function LandingPage() {
               id="home"
               className="landing-hero"
               onMouseMove={handleHeroPointer}
-              onMouseLeave={() => setHeroPointer({ x: 0, y: 0 })}
+              onMouseLeave={() =>
+                setHeroPointer({ x: 0, y: 0 })
+              }
             >
 
               <div
@@ -846,7 +742,6 @@ function LandingPage() {
 
               <div className="landing-hero-overlay" />
 
-
               <div className="landing-hero-content">
 
                 <div className="landing-eyebrow">
@@ -857,25 +752,20 @@ function LandingPage() {
 
                 </div>
 
-
                 <h1>
-
                   Great people.
                   <br />
 
-                  <span>Great teams.</span>
-
+                  <span>
+                    Great teams.
+                  </span>
                 </h1>
 
-
                 <p className="landing-hero-description">
-
                   Know someone who could make a difference?
                   Connect exceptional talent with opportunities
                   where they can make an impact.
-
                 </p>
-
 
                 <div className="landing-hero-actions">
 
@@ -884,49 +774,79 @@ function LandingPage() {
                     className="landing-primary-button"
                     onClick={() => navigate("/login")}
                   >
-
                     Login
 
                     <ArrowRight size={17} />
-
                   </button>
-
 
                   <button
                     type="button"
                     className="landing-discover-link"
                     onClick={() => goToSection("about")}
                   >
-
                     Discover more
 
                     <ArrowRight size={14} />
-
                   </button>
 
                 </div>
 
               </div>
 
+              <div
+                className="landing-hero-orbit"
+                aria-hidden="true"
+              >
 
-              <div className="landing-hero-orbit" aria-hidden="true">
                 <div className="hero-orbit-ring hero-orbit-ring-one" />
-                <div className="hero-orbit-ring hero-orbit-ring-two" />
-                <div className="hero-orbit-core">
-                  <span>REFERRAL</span>
-                  <strong>LIVE</strong>
-                </div>
-                <div className="hero-float-card hero-float-card-one">
-                  <UserRound size={15} />
-                  <div><span>NEW REFERRAL</span><strong>Candidate added</strong></div>
-                  <CheckCircle2 size={15} />
-                </div>
-                <div className="hero-float-card hero-float-card-two">
-                  <BrainCircuit size={15} />
-                  <div><span>AI MATCH</span><strong>94% relevant</strong></div>
-                </div>
-              </div>
 
+                <div className="hero-orbit-ring hero-orbit-ring-two" />
+
+                <div className="hero-orbit-core">
+                  <span>
+                    REFERRAL
+                  </span>
+
+                  <strong>
+                    LIVE
+                  </strong>
+                </div>
+
+                <div className="hero-float-card hero-float-card-one">
+
+                  <UserRound size={15} />
+
+                  <div>
+                    <span>
+                      NEW REFERRAL
+                    </span>
+
+                    <strong>
+                      Candidate added
+                    </strong>
+                  </div>
+
+                  <CheckCircle2 size={15} />
+
+                </div>
+
+                <div className="hero-float-card hero-float-card-two">
+
+                  <BrainCircuit size={15} />
+
+                  <div>
+                    <span>
+                      AI MATCH
+                    </span>
+
+                    <strong>
+                      94% relevant
+                    </strong>
+                  </div>
+
+                </div>
+
+              </div>
 
               <div className="landing-hero-meta">
 
@@ -946,118 +866,322 @@ function LandingPage() {
 
             </section>
 
-
             {/* =================================================
                 PLATFORM PULSE
             ================================================= */}
 
             <section className="landing-pulse">
-              <div className="landing-container">
-                <div className="landing-pulse-track">
-                  <span><Sparkles size={14} /> SMART REFERRALS</span>
-                  <i />
-                  <span><Zap size={14} /> FASTER CONNECTIONS</span>
-                  <i />
-                  <span><ShieldCheck size={14} /> TRUSTED WORKFLOW</span>
-                  <i />
-                  <span><BarChart3 size={14} /> BETTER VISIBILITY</span>
-                </div>
-              </div>
-            </section>
 
+              <div className="landing-container">
+
+                <div className="landing-pulse-track">
+
+                  <span>
+                    <Sparkles size={14} />
+                    SMART REFERRALS
+                  </span>
+
+                  <i />
+
+                  <span>
+                    <Zap size={14} />
+                    FASTER CONNECTIONS
+                  </span>
+
+                  <i />
+
+                  <span>
+                    <ShieldCheck size={14} />
+                    TRUSTED WORKFLOW
+                  </span>
+
+                  <i />
+
+                  <span>
+                    <BarChart3 size={14} />
+                    BETTER VISIBILITY
+                  </span>
+
+                </div>
+
+              </div>
+
+            </section>
 
             {/* =================================================
                 HOW IT WORKS
             ================================================= */}
 
             <section className="landing-how-it-works">
+
               <div className="landing-container">
+
                 <div className="landing-section-top landing-section-top-dark">
+
                   <div>
-                    <span className="landing-section-label">HOW IT WORKS</span>
-                    <h2>One connection.
-                      <br />Three simple steps.</h2>
+
+                    <span className="landing-section-label">
+                      HOW IT WORKS
+                    </span>
+
+                    <h2>
+                      One connection.
+                      <br />
+                      Three simple steps.
+                    </h2>
+
                   </div>
-                  <span className="landing-section-number">01</span>
+
+                  <span className="landing-section-number">
+                    01
+                  </span>
+
                 </div>
 
                 <div className="landing-feature-layout">
+
                   <div className="landing-feature-list">
+
                     {[
-                      { id: "connect", number: "01", icon: UserRound, title: "Connect", text: "Recommend someone from your network with a few simple details." },
-                      { id: "match", number: "02", icon: BrainCircuit, title: "Match", text: "Relevant roles and intelligent analysis help recruiters focus faster." },
-                      { id: "track", number: "03", icon: BarChart3, title: "Track", text: "Follow every referral from submission through the hiring journey." },
+                      {
+                        id: "connect",
+                        number: "01",
+                        icon: UserRound,
+                        title: "Connect",
+                        text: "Recommend someone from your network with a few simple details.",
+                      },
+                      {
+                        id: "match",
+                        number: "02",
+                        icon: BrainCircuit,
+                        title: "Match",
+                        text: "Relevant roles and intelligent analysis help recruiters focus faster.",
+                      },
+                      {
+                        id: "track",
+                        number: "03",
+                        icon: BarChart3,
+                        title: "Track",
+                        text: "Follow every referral from submission through the hiring journey.",
+                      },
                     ].map((item) => {
+
                       const Icon = item.icon;
-                      const active = activeFeature === item.id;
+                      const active =
+                        activeFeature === item.id;
+
                       return (
                         <button
                           key={item.id}
                           type="button"
-                          className={`landing-feature-item ${active ? "is-active" : ""}`}
-                          onClick={() => setActiveFeature(item.id)}
+                          className={`landing-feature-item ${
+                            active ? "is-active" : ""
+                          }`}
+                          onClick={() =>
+                            setActiveFeature(item.id)
+                          }
                         >
-                          <span className="landing-feature-number">{item.number}</span>
-                          <span className="landing-feature-icon"><Icon size={18} /></span>
-                          <span className="landing-feature-copy"><strong>{item.title}</strong><small>{item.text}</small></span>
-                          <ArrowRight size={17} className="landing-feature-arrow" />
+
+                          <span className="landing-feature-number">
+                            {item.number}
+                          </span>
+
+                          <span className="landing-feature-icon">
+                            <Icon size={18} />
+                          </span>
+
+                          <span className="landing-feature-copy">
+
+                            <strong>
+                              {item.title}
+                            </strong>
+
+                            <small>
+                              {item.text}
+                            </small>
+
+                          </span>
+
+                          <ArrowRight
+                            size={17}
+                            className="landing-feature-arrow"
+                          />
+
                         </button>
                       );
                     })}
+
                   </div>
 
                   <div className="landing-feature-stage">
-                    <div className="feature-stage-grid" />
-                    <div className="feature-stage-glow" />
-                    <div className="feature-stage-label">EMPLOYEE REFERRAL PLATFORM</div>
-                    <div className="feature-stage-window">
-                      <div className="feature-stage-window-top">
-                        <span /> <span /> <span />
-                        <small>REFERRAL / {activeFeature.toUpperCase()}</small>
-                      </div>
-                      <div className="feature-stage-window-body">
-                        <div className="feature-stage-avatar"><UserRound size={24} /></div>
-                        <div>
-                          <span className="feature-stage-kicker">{activeFeature === "connect" ? "NEW CONNECTION" : activeFeature === "match" ? "INTELLIGENT MATCH" : "REFERRAL STATUS"}</span>
-                          <h3>{activeFeature === "connect" ? "Recommend great people." : activeFeature === "match" ? "Find the right opportunity." : "Know what happens next."}</h3>
-                          <p>{activeFeature === "connect" ? "Start with a trusted introduction and let the platform handle the journey." : activeFeature === "match" ? "Give hiring teams clearer signals with structured candidate insights." : "Keep employees informed while HR moves candidates forward."}</p>
-                        </div>
-                      </div>
-                      <div className="feature-stage-progress"><span /><span /><span /></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
 
+                    <div className="feature-stage-grid" />
+
+                    <div className="feature-stage-glow" />
+
+                    <div className="feature-stage-label">
+                      EMPLOYEE REFERRAL PLATFORM
+                    </div>
+
+                    <div className="feature-stage-window">
+
+                      <div className="feature-stage-window-top">
+
+                        <span />
+                        <span />
+                        <span />
+
+                        <small>
+                          REFERRAL /{" "}
+                          {activeFeature.toUpperCase()}
+                        </small>
+
+                      </div>
+
+                      <div className="feature-stage-window-body">
+
+                        <div className="feature-stage-avatar">
+                          <UserRound size={24} />
+                        </div>
+
+                        <div>
+
+                          <span className="feature-stage-kicker">
+                            {
+                              activeFeature === "connect"
+                                ? "NEW CONNECTION"
+                                : activeFeature === "match"
+                                  ? "INTELLIGENT MATCH"
+                                  : "REFERRAL STATUS"
+                            }
+                          </span>
+
+                          <h3>
+                            {
+                              activeFeature === "connect"
+                                ? "Recommend great people."
+                                : activeFeature === "match"
+                                  ? "Find the right opportunity."
+                                  : "Know what happens next."
+                            }
+                          </h3>
+
+                          <p>
+                            {
+                              activeFeature === "connect"
+                                ? "Start with a trusted introduction and let the platform handle the journey."
+                                : activeFeature === "match"
+                                  ? "Give hiring teams clearer signals with structured candidate insights."
+                                  : "Keep employees informed while HR moves candidates forward."
+                            }
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                      <div className="feature-stage-progress">
+                        <span />
+                        <span />
+                        <span />
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </section>
 
             {/* =================================================
                 PORTAL CTA
             ================================================= */}
 
             <section className="landing-portal-cta">
-              <div className="landing-container">
-                <div className="landing-portal-copy">
-                  <span className="landing-section-label">READY TO GET STARTED?</span>
-                  <h2>Bring the right people
-                    <br />into the conversation.</h2>
-                  <p>Choose your portal and continue with the referral experience built for your role.</p>
-                </div>
-                <div className="landing-portal-actions">
-                  <button type="button" className="landing-portal-card" onClick={() => navigate("/employee/login")}>
-                    <span className="portal-card-icon"><UserRound size={20} /></span>
-                    <span><small>FOR EMPLOYEES</small><strong>Refer a candidate</strong></span>
-                    <ArrowUpRight size={19} />
-                  </button>
-                  <button type="button" className="landing-portal-card" onClick={() => navigate("/hr/login")}>
-                    <span className="portal-card-icon"><Building2 size={20} /></span>
-                    <span><small>FOR HR TEAMS</small><strong>Review candidates</strong></span>
-                    <ArrowUpRight size={19} />
-                  </button>
-                </div>
-              </div>
-            </section>
 
+              <div className="landing-container">
+
+                <div className="landing-portal-copy">
+
+                  <span className="landing-section-label">
+                    READY TO GET STARTED?
+                  </span>
+
+                  <h2>
+                    Bring the right people
+                    <br />
+                    into the conversation.
+                  </h2>
+
+                  <p>
+                    Choose your portal and continue with
+                    the referral experience built for your role.
+                  </p>
+
+                </div>
+
+                <div className="landing-portal-actions">
+
+                  <button
+                    type="button"
+                    className="landing-portal-card"
+                    onClick={() =>
+                      navigate("/employee/login")
+                    }
+                  >
+
+                    <span className="portal-card-icon">
+                      <UserRound size={20} />
+                    </span>
+
+                    <span>
+                      <small>
+                        FOR EMPLOYEES
+                      </small>
+
+                      <strong>
+                        Refer a candidate
+                      </strong>
+                    </span>
+
+                    <ArrowUpRight size={19} />
+
+                  </button>
+
+                  <button
+                    type="button"
+                    className="landing-portal-card"
+                    onClick={() =>
+                      navigate("/hr/login")
+                    }
+                  >
+
+                    <span className="portal-card-icon">
+                      <Building2 size={20} />
+                    </span>
+
+                    <span>
+                      <small>
+                        FOR HR TEAMS
+                      </small>
+
+                      <strong>
+                        Review candidates
+                      </strong>
+                    </span>
+
+                    <ArrowUpRight size={19} />
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </section>
 
             {/* =================================================
                 ABOUT
@@ -1070,7 +1194,6 @@ function LandingPage() {
 
               <div className="landing-container">
 
-
                 <div className="landing-section-top">
 
                   <div>
@@ -1080,16 +1203,12 @@ function LandingPage() {
                     </span>
 
                     <h2>
-
                       Connecting people
                       <br />
-
                       with possibilities.
-
                     </h2>
 
                   </div>
-
 
                   <span className="landing-section-number">
                     02
@@ -1097,14 +1216,17 @@ function LandingPage() {
 
                 </div>
 
-
                 <div className="landing-about-grid">
 
+                  {/* REAL IMAGE */}
 
                   <div className="landing-about-visual">
 
-                    <div className="landing-about-image" />
-
+                    <img
+                      src="/images/image.png"
+                      alt="Micron technology and innovation"
+                      className="landing-about-image"
+                    />
 
                     <div className="landing-about-caption">
 
@@ -1113,55 +1235,40 @@ function LandingPage() {
                       </span>
 
                       <strong>
-
                         Innovation begins
                         <br />
-
                         with the right people.
-
                       </strong>
 
                     </div>
 
                   </div>
 
-
                   <div className="landing-about-copy">
 
                     <p className="landing-about-lead">
-
                       Strong teams are built by people who bring
                       different ideas, experiences and perspectives
                       together.
-
                     </p>
 
-
                     <p>
-
                       Our employee referral platform gives employees
                       a simple way to recommend talented people from
                       their professional network.
-
                     </p>
 
-
                     <p>
-
                       Once a referral is submitted, the candidate
                       continues through a dedicated application
                       experience. Intelligent analysis can then help
                       recruitment teams understand candidate
                       profiles and identify relevant opportunities.
-
                     </p>
-
 
                     <div className="landing-about-divider" />
 
-
                     <div className="landing-about-values">
-
 
                       <div>
 
@@ -1175,7 +1282,6 @@ function LandingPage() {
 
                       </div>
 
-
                       <div>
 
                         <span>
@@ -1187,7 +1293,6 @@ function LandingPage() {
                         </strong>
 
                       </div>
-
 
                       <div>
 
@@ -1211,7 +1316,6 @@ function LandingPage() {
 
             </section>
 
-
             {/* =================================================
                 CONTACT
             ================================================= */}
@@ -1222,7 +1326,6 @@ function LandingPage() {
             >
 
               <div className="landing-container">
-
 
                 <div className="landing-section-top">
 
@@ -1238,13 +1341,11 @@ function LandingPage() {
 
                   </div>
 
-
                   <span className="landing-section-number">
                     03
                   </span>
 
                 </div>
-
 
                 <div className="landing-contact-intro">
 
@@ -1252,7 +1353,6 @@ function LandingPage() {
                     Explore company information, locations
                     and official contact resources.
                   </p>
-
 
                   <button
                     type="button"
@@ -1271,9 +1371,7 @@ function LandingPage() {
 
                 </div>
 
-
                 <div className="landing-contact-grid">
-
 
                   {/* COMPANY */}
 
@@ -1291,7 +1389,6 @@ function LandingPage() {
 
                     </div>
 
-
                     <div>
 
                       <span className="landing-contact-label">
@@ -1303,29 +1400,26 @@ function LandingPage() {
                       </h3>
 
                       <p>
-
                         Discover Micron's technology,
                         people and global presence.
-
                       </p>
 
                     </div>
 
+                    {/* OFFICIAL MICRON LINK */}
 
-                    <button
-                      type="button"
+                    <a
+                      href="https://www.micron.com/about/company/corporate-profile"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="landing-contact-link"
-                      onClick={() => openPanel("company")}
                     >
-
                       Company profile
 
                       <ArrowUpRight size={14} />
-
-                    </button>
+                    </a>
 
                   </article>
-
 
                   {/* LOCATIONS */}
 
@@ -1343,7 +1437,6 @@ function LandingPage() {
 
                     </div>
 
-
                     <div>
 
                       <span className="landing-contact-label">
@@ -1355,29 +1448,26 @@ function LandingPage() {
                       </h3>
 
                       <p>
-
                         Explore Micron locations and
                         discover where our teams work.
-
                       </p>
 
                     </div>
 
+                    {/* OFFICIAL MICRON LINK */}
 
-                    <button
-                      type="button"
+                    <a
+                      href="https://www.micron.com/about/locations"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="landing-contact-link"
-                      onClick={() => openPanel("locations")}
                     >
-
                       View locations
 
                       <ArrowUpRight size={14} />
-
-                    </button>
+                    </a>
 
                   </article>
-
 
                   {/* CONTACT */}
 
@@ -1395,7 +1485,6 @@ function LandingPage() {
 
                     </div>
 
-
                     <div>
 
                       <span className="landing-contact-label">
@@ -1407,26 +1496,24 @@ function LandingPage() {
                       </h3>
 
                       <p>
-
                         Find official Micron contact and
                         support resources.
-
                       </p>
 
                     </div>
 
+                    {/* OFFICIAL MICRON LINK */}
 
-                    <button
-                      type="button"
+                    <a
+                      href="https://www.micron.com/sales-support"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="landing-contact-link"
-                      onClick={() => openPanel("contact")}
                     >
-
                       Contact Micron
 
                       <ArrowUpRight size={14} />
-
-                    </button>
+                    </a>
 
                   </article>
 
@@ -1438,7 +1525,6 @@ function LandingPage() {
 
           </main>
 
-
           {/* ==================================================
               FOOTER
           ================================================== */}
@@ -1447,9 +1533,7 @@ function LandingPage() {
 
             <div className="landing-container">
 
-
               <div className="landing-footer-main">
-
 
                 <div className="landing-footer-brand">
 
@@ -1469,13 +1553,11 @@ function LandingPage() {
 
                   </button>
 
-
                   <p>
                     Employee Referral Platform
                   </p>
 
                 </div>
-
 
                 <div className="landing-footer-column">
 
@@ -1488,19 +1570,22 @@ function LandingPage() {
                   </button>
 
                   <button
-                    onClick={() => goToSection("about")}
+                    onClick={() =>
+                      goToSection("about")
+                    }
                   >
                     About Us
                   </button>
 
                   <button
-                    onClick={() => goToSection("contact")}
+                    onClick={() =>
+                      goToSection("contact")
+                    }
                   >
                     Contact
                   </button>
 
                 </div>
-
 
                 <div className="landing-footer-column">
 
@@ -1509,13 +1594,16 @@ function LandingPage() {
                   </span>
 
                   <button
-                    onClick={() => navigate("/login")}
+                    onClick={() =>
+                      navigate("/login")
+                    }
                   >
                     Login
                   </button>
 
                 </div>
 
+                {/* OFFICIAL MICRON LINKS */}
 
                 <div className="landing-footer-column">
 
@@ -1523,31 +1611,35 @@ function LandingPage() {
                     MICRON
                   </span>
 
-                  <button
-                    onClick={() => openPanel("company")}
+                  <a
+                    href="https://www.micron.com/about/company/corporate-profile"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Company
-                  </button>
+                  </a>
 
-                  <button
-                    onClick={() => openPanel("locations")}
+                  <a
+                    href="https://www.micron.com/about/locations"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Locations
-                  </button>
+                  </a>
 
-                  <button
-                    onClick={() => openPanel("contact")}
+                  <a
+                    href="https://www.micron.com/sales-support"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Contact
-                  </button>
+                  </a>
 
                 </div>
 
               </div>
 
-
               <div className="landing-footer-info">
-
 
                 <div>
 
@@ -1560,19 +1652,14 @@ function LandingPage() {
                   </strong>
 
                   <p>
-
                     8000 S. Federal Way
                     <br />
-
                     Boise, Idaho 83716
                     <br />
-
                     United States
-
                   </p>
 
                 </div>
-
 
                 <div className="landing-footer-official">
 
@@ -1585,24 +1672,20 @@ function LandingPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-
                     micron.com
 
                     <ArrowUpRight size={12} />
-
                   </a>
 
                 </div>
 
               </div>
 
-
               <div className="landing-footer-bottom">
 
                 <span>
                   © 2026 Micron Technology, Inc.
                 </span>
-
 
                 <div>
 
@@ -1627,7 +1710,6 @@ function LandingPage() {
           </footer>
 
         </>
-
       )}
 
     </div>

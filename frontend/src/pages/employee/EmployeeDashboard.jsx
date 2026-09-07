@@ -2,17 +2,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
-  ArrowRight,
-  BadgeCheck,
-  BarChart3,
+  Bell,
   CheckCircle2,
+  ChevronDown,
   ChevronRight,
   Clock3,
+  FileText,
   HelpCircle,
   LayoutDashboard,
   LogOut,
-  Mail,
   Menu,
+  Search,
+  Settings,
   Sparkles,
   User,
   UserPlus,
@@ -21,91 +22,111 @@ import {
 } from "lucide-react";
 
 import "./EmployeeDashboard.css";
-import { clearEmployeeSession, getEmployeeSession } from "../../services/auth";
+
+import {
+  clearEmployeeSession,
+  getEmployeeSession,
+} from "../../services/auth";
+
 
 function EmployeeDashboard() {
   const navigate = useNavigate();
 
   const [employee, setEmployee] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] =
+    useState(false);
 
-  /* =========================
-     CHECK LOGIN
-  ========================= */
+
+  /* =========================================================
+     LOAD EMPLOYEE SESSION
+  ========================================================= */
 
   useEffect(() => {
     const parsedEmployee = getEmployeeSession();
 
     if (!parsedEmployee) {
-      navigate("/employee/login", { replace: true });
+      navigate("/employee/login", {
+        replace: true,
+      });
+
       return;
     }
 
     setEmployee(parsedEmployee);
   }, [navigate]);
 
-  /* =========================
+
+  /* =========================================================
+     ESCAPE KEY
+  ========================================================= */
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setSidebarOpen(false);
+        setProfileOpen(false);
+        setNotificationsOpen(false);
+      }
+    };
+
+    document.addEventListener(
+      "keydown",
+      handleEscape
+    );
+
+    return () => {
+      document.removeEventListener(
+        "keydown",
+        handleEscape
+      );
+    };
+  }, []);
+
+
+  /* =========================================================
+     NAVIGATION
+  ========================================================= */
+
+  const goTo = (path) => {
+    setSidebarOpen(false);
+    setProfileOpen(false);
+    setNotificationsOpen(false);
+
+    navigate(path);
+  };
+
+
+  /* =========================================================
      LOGOUT
-  ========================= */
-const handleLogout = () => {
-  clearEmployeeSession();
-  navigate("/employee/login", { replace: true });
-};
+  ========================================================= */
 
+  const handleLogout = () => {
+    clearEmployeeSession();
 
-  /* =========================
-     REFER CANDIDATE
-  ========================= */
-
-  const goToReferral = () => {
-    setSidebarOpen(false);
-
-    /*
-      Referral page is not currently registered
-      in App.jsx.
-
-      Keep this navigation when you create:
-      /employee/refer
-    */
-
-    navigate("/employee/refer");
+    navigate("/employee/login", {
+      replace: true,
+    });
   };
 
 
-  /* =========================
-     SCROLL TO SECTION
-  ========================= */
-
-  const scrollToSection = (id) => {
-    setSidebarOpen(false);
-
-    const element = document.getElementById(id);
-
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
-
-
-  /* =========================
+  /* =========================================================
      LOADING
-  ========================= */
+  ========================================================= */
 
   if (!employee) {
     return (
       <div className="employee-dashboard-loading">
-        <div className="dashboard-loader"></div>
+        <div className="dashboard-loader" />
       </div>
     );
   }
 
 
-  /* =========================
-     EMPLOYEE INFORMATION
-  ========================= */
+  /* =========================================================
+     EMPLOYEE DATA
+  ========================================================= */
 
   const firstName =
     employee.firstName || "Employee";
@@ -116,29 +137,41 @@ const handleLogout = () => {
   const fullName =
     `${firstName} ${lastName}`.trim();
 
+  const employeeId =
+    employee.employeeId || "EMPLOYEE";
+
+  const email =
+    employee.email || "";
+
   const initials =
     `${firstName.charAt(0)}${lastName.charAt(0)}`
       .toUpperCase();
 
 
+  /* =========================================================
+     RENDER
+  ========================================================= */
+
   return (
     <div className="employee-dashboard-page">
 
-      {/* =========================
-          MOBILE OVERLAY
-      ========================= */}
+      {/* =====================================================
+          SIDEBAR OVERLAY
+      ===================================================== */}
 
       {sidebarOpen && (
         <div
           className="dashboard-sidebar-overlay"
-          onClick={() => setSidebarOpen(false)}
+          onClick={() =>
+            setSidebarOpen(false)
+          }
         />
       )}
 
 
-      {/* =========================
+      {/* =====================================================
           SIDEBAR
-      ========================= */}
+      ===================================================== */}
 
       <aside
         className={`dashboard-sidebar ${
@@ -148,164 +181,187 @@ const handleLogout = () => {
         }`}
       >
 
-        <div className="sidebar-top">
+        {/* BRAND */}
 
-          {/* BRAND */}
+        <div className="sidebar-brand">
 
-          <div className="sidebar-brand">
-
-            <div className="sidebar-brand-mark">
-              M
-            </div>
-
-            <div className="sidebar-brand-text">
-              <strong>micron</strong>
-              <span>Employee Portal</span>
-            </div>
-
-            <button
-              type="button"
-              className="sidebar-close"
-              onClick={() =>
-                setSidebarOpen(false)
-              }
-            >
-              <X size={19} />
-            </button>
-
+          <div className="sidebar-brand-mark">
+            M
           </div>
 
+          <div className="sidebar-brand-text">
+            <strong>micron</strong>
+            <span>Employee Portal</span>
+          </div>
 
-          {/* WORKSPACE */}
+          <button
+            type="button"
+            className="sidebar-close"
+            onClick={() =>
+              setSidebarOpen(false)
+            }
+            aria-label="Close sidebar"
+          >
+            <X size={18} />
+          </button>
+
+        </div>
+
+
+        {/* NAVIGATION */}
+
+        <nav className="sidebar-navigation">
 
           <div className="sidebar-section-label">
             WORKSPACE
           </div>
 
 
-          {/* NAVIGATION */}
+          {/* DASHBOARD */}
 
-          <nav className="sidebar-navigation">
+          <button
+            type="button"
+            className="sidebar-nav-item active"
+            onClick={() =>
+              goTo("/employee/dashboard")
+            }
+          >
+            <LayoutDashboard size={17} />
 
-            {/* Dashboard */}
-
-            <button
-              type="button"
-              className="sidebar-nav-item active"
-              onClick={() =>
-                scrollToSection(
-                  "dashboard-home"
-                )
-              }
-            >
-              <LayoutDashboard size={17} />
-
-              <span>
-                Dashboard
-              </span>
-            </button>
-
-
-            {/* Refer Candidate */}
-
-            <button
-              type="button"
-              className="sidebar-nav-item"
-              onClick={goToReferral}
-            >
-              <UserPlus size={17} />
-
-              <span>
-                Refer Candidate
-              </span>
-
-              <ChevronRight
-                size={14}
-                className="nav-arrow"
-              />
-            </button>
-
-
-            {/* My Referrals */}
-
-            <button
-              type="button"
-              className="sidebar-nav-item"
-              onClick={() => navigate("/employee/referrals")}
-            >
-              <Users size={17} />
-
-              <span>
-                My Referrals
-              </span>
-            </button>
-
-
-            {/* My Profile */}
-
-            <button
-              type="button"
-              className="sidebar-nav-item"
-              onClick={() =>
-                scrollToSection(
-                  "profile-section"
-                )
-              }
-            >
-              <User size={17} />
-
-              <span>
-                My Profile
-              </span>
-            </button>
-
-          </nav>
-
-          <div className="sidebar-section-label sidebar-help-label">ACCOUNT</div>
-
-          <button type="button" className="sidebar-nav-item" onClick={() => navigate("/employee/notifications")}>
-            <Mail size={17} />
-            <span>Notifications</span>
+            <span>
+              Dashboard
+            </span>
           </button>
 
-          <button type="button" className="sidebar-nav-item" onClick={() => navigate("/employee/settings")}>
-            <BadgeCheck size={17} />
-            <span>Settings</span>
-          </button>
 
-          {/* SUPPORT */}
-
-          <div className="sidebar-section-label sidebar-help-label">
-            SUPPORT
-          </div>
-
+          {/* REFER */}
 
           <button
             type="button"
             className="sidebar-nav-item"
             onClick={() =>
-              scrollToSection(
-                "how-it-works"
-              )
+              goTo("/employee/refer")
+            }
+          >
+            <UserPlus size={17} />
+
+            <span>
+              Refer Candidate
+            </span>
+
+            <ChevronRight
+              size={14}
+              className="sidebar-nav-arrow"
+            />
+          </button>
+
+
+          {/* REFERRALS */}
+
+          <button
+            type="button"
+            className="sidebar-nav-item"
+            onClick={() =>
+              goTo("/employee/referrals")
+            }
+          >
+            <Users size={17} />
+
+            <span>
+              My Referrals
+            </span>
+          </button>
+
+
+          {/* PROFILE */}
+
+          <button
+            type="button"
+            className="sidebar-nav-item"
+            onClick={() =>
+              goTo("/employee/profile")
+            }
+          >
+            <User size={17} />
+
+            <span>
+              My Profile
+            </span>
+          </button>
+
+
+          <div className="sidebar-section-label">
+            ACCOUNT
+          </div>
+
+
+          {/* NOTIFICATIONS */}
+
+          <button
+            type="button"
+            className="sidebar-nav-item"
+            onClick={() =>
+              goTo("/employee/notifications")
+            }
+          >
+            <Bell size={17} />
+
+            <span>
+              Notifications
+            </span>
+
+            <span className="sidebar-notification-badge">
+              2
+            </span>
+          </button>
+
+
+          {/* SETTINGS */}
+
+          <button
+            type="button"
+            className="sidebar-nav-item"
+            onClick={() =>
+              goTo("/employee/settings")
+            }
+          >
+            <Settings size={17} />
+
+            <span>
+              Settings
+            </span>
+          </button>
+
+
+          <div className="sidebar-section-label">
+            SUPPORT
+          </div>
+
+
+          {/* HELP */}
+
+          <button
+            type="button"
+            className="sidebar-nav-item"
+            onClick={() =>
+              goTo("/employee/dashboard")
             }
           >
             <HelpCircle size={17} />
 
             <span>
-              How it works
+              Help & Support
             </span>
           </button>
 
-        </div>
+        </nav>
 
 
-        {/* =========================
-            SIDEBAR PROFILE
-        ========================= */}
+        {/* SIDEBAR USER */}
 
         <div className="sidebar-bottom">
 
-          <div className="sidebar-employee">
+          <div className="sidebar-user">
 
             <div className="sidebar-avatar">
 
@@ -320,15 +376,14 @@ const handleLogout = () => {
 
             </div>
 
-
-            <div className="sidebar-employee-info">
+            <div className="sidebar-user-info">
 
               <strong>
                 {fullName}
               </strong>
 
               <span>
-                {employee.employeeId}
+                {employeeId}
               </span>
 
             </div>
@@ -336,18 +391,13 @@ const handleLogout = () => {
           </div>
 
 
-          {/* SIGN OUT */}
-
           <button
             type="button"
             className="sidebar-signout"
             onClick={handleLogout}
           >
-            <LogOut size={16} />
-
-            <span>
-              Sign out
-            </span>
+            <LogOut size={15} />
+            Sign out
           </button>
 
         </div>
@@ -355,811 +405,291 @@ const handleLogout = () => {
       </aside>
 
 
-      {/* =========================
-          MAIN AREA
-      ========================= */}
+      {/* =====================================================
+          MAIN
+      ===================================================== */}
 
-      <div className="dashboard-content">
+      <div className="employee-main">
 
 
-        {/* =========================
-            MOBILE HEADER
-        ========================= */}
+        {/* HEADER */}
 
-        <header className="mobile-dashboard-header">
+        <header className="employee-header">
 
-          <div className="mobile-brand">
+          <div className="employee-header-left">
 
-            <div className="mobile-brand-mark">
-              M
+            <button
+              type="button"
+              className="employee-menu-button"
+              onClick={() => {
+                setSidebarOpen(true);
+                setProfileOpen(false);
+                setNotificationsOpen(false);
+              }}
+              aria-label="Open sidebar"
+            >
+              <Menu size={19} />
+            </button>
+
+            <div className="employee-header-title">
+              Dashboard
             </div>
-
-            <strong>
-              micron
-            </strong>
 
           </div>
 
 
-          <button
-            type="button"
-            className="mobile-menu-button"
-            onClick={() =>
-              setSidebarOpen(true)
-            }
-          >
-            <Menu size={20} />
-          </button>
+          <div className="employee-header-right">
+
+
+            {/* SEARCH */}
+
+            <div className="employee-search">
+
+              <Search size={15} />
+
+              <input
+                type="text"
+                placeholder="Search candidates, jobs, referrals..."
+              />
+
+              <span>
+                ⌘ K
+              </span>
+
+            </div>
+
+
+            {/* NOTIFICATIONS */}
+
+            <div className="employee-header-dropdown">
+
+              <button
+                type="button"
+                className="employee-header-icon"
+                onClick={() => {
+                  setNotificationsOpen(
+                    !notificationsOpen
+                  );
+
+                  setProfileOpen(false);
+                }}
+              >
+                <Bell size={18} />
+
+                <span className="employee-header-dot" />
+              </button>
+
+
+              {notificationsOpen && (
+                <div className="employee-dropdown">
+
+                  <div className="employee-dropdown-heading">
+
+                    <strong>
+                      Notifications
+                    </strong>
+
+                    <span>
+                      2 unread
+                    </span>
+
+                  </div>
+
+
+                  <div className="employee-notification">
+
+                    <div className="employee-notification-icon">
+                      <UserPlus size={14} />
+                    </div>
+
+                    <div>
+
+                      <strong>
+                        Referral invitation
+                      </strong>
+
+                      <p>
+                        Your candidate invitation
+                        activity will appear here.
+                      </p>
+
+                      <span>
+                        Just now
+                      </span>
+
+                    </div>
+
+                  </div>
+
+
+                  <button
+                    type="button"
+                    className="employee-dropdown-link"
+                    onClick={() =>
+                      goTo(
+                        "/employee/notifications"
+                      )
+                    }
+                  >
+                    View all notifications
+                    <ChevronRight size={13} />
+                  </button>
+
+                </div>
+              )}
+
+            </div>
+
+
+            {/* PROFILE */}
+
+            <div className="employee-header-dropdown">
+
+              <button
+                type="button"
+                className="employee-profile-button"
+                onClick={() => {
+                  setProfileOpen(!profileOpen);
+                  setNotificationsOpen(false);
+                }}
+              >
+
+                <div className="employee-header-avatar">
+
+                  {employee.profilePicture ? (
+                    <img
+                      src={employee.profilePicture}
+                      alt={fullName}
+                    />
+                  ) : (
+                    initials || "E"
+                  )}
+
+                </div>
+
+                <div className="employee-header-user">
+
+                  <strong>
+                    {fullName}
+                  </strong>
+
+                  <span>
+                    {employeeId}
+                  </span>
+
+                </div>
+
+                <ChevronDown size={14} />
+
+              </button>
+
+
+              {profileOpen && (
+                <div className="employee-dropdown employee-profile-dropdown">
+
+                  <div className="employee-profile-summary">
+
+                    <div className="employee-dropdown-avatar">
+
+                      {employee.profilePicture ? (
+                        <img
+                          src={employee.profilePicture}
+                          alt={fullName}
+                        />
+                      ) : (
+                        initials || "E"
+                      )}
+
+                    </div>
+
+                    <div>
+
+                      <strong>
+                        {fullName}
+                      </strong>
+
+                      <span>
+                        {email}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+
+                  <div className="employee-dropdown-divider" />
+
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      goTo("/employee/profile")
+                    }
+                  >
+                    <User size={15} />
+                    My Profile
+                  </button>
+
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      goTo("/employee/settings")
+                    }
+                  >
+                    <Settings size={15} />
+                    Settings
+                  </button>
+
+
+                  <div className="employee-dropdown-divider" />
+
+
+                  <button
+                    type="button"
+                    className="employee-dropdown-logout"
+                    onClick={handleLogout}
+                  >
+                    <LogOut size={15} />
+                    Sign out
+                  </button>
+
+                </div>
+              )}
+
+            </div>
+
+          </div>
 
         </header>
 
 
-        <main className="dashboard-main">
+        {/* =====================================================
+            DASHBOARD CONTENT
+        ===================================================== */}
+
+        <main className="employee-content">
 
 
-          {/* =========================
-              TOP BAR
-          ========================= */}
+          {/* INTRO */}
 
-          <div className="dashboard-topbar">
+          <section className="employee-page-intro">
 
             <div>
 
-              <span className="dashboard-date">
-                EMPLOYEE REFERRAL PORTAL
+              <span className="employee-eyebrow">
+                EMPLOYEE REFERRAL WORKSPACE
               </span>
-
-              <div className="dashboard-topbar-line">
-
-                <span>
-                  Talent network
-                </span>
-
-                <span className="topbar-dot"></span>
-
-                <span>
-                  Internal referrals
-                </span>
-
-              </div>
-
-            </div>
-
-
-            {/* TOP PROFILE */}
-
-            <div className="topbar-profile">
-
-              <div className="topbar-avatar">
-
-                {employee.profilePicture ? (
-                  <img
-                    src={employee.profilePicture}
-                    alt={fullName}
-                  />
-                ) : (
-                  initials || "E"
-                )}
-
-              </div>
-
-
-              <div className="topbar-profile-info">
-
-                <strong>
-                  {fullName}
-                </strong>
-
-                <span>
-                  {employee.employeeId}
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          {/* =========================
-              HERO
-          ========================= */}
-
-          <section
-            className="dashboard-hero"
-            id="dashboard-home"
-          >
-
-            <div className="hero-glow"></div>
-
-
-            <div className="hero-content">
-
-              <div className="hero-badge">
-
-                <span className="hero-status-dot"></span>
-
-                YOUR REFERRAL SPACE
-
-              </div>
-
 
               <h1>
-
-                Welcome back,
-
-                <span>
-                  {firstName}.
-                </span>
-
+                Welcome back,{" "}
+                <span>{firstName}.</span>
               </h1>
 
-
               <p>
-                Your network can help Micron find the next
-                great teammate. Refer someone you believe
-                would be a strong fit.
-              </p>
-
-
-              <div className="hero-actions">
-
-                {/* PRIMARY */}
-
-                <button
-                  type="button"
-                  className="hero-primary-button"
-                  onClick={goToReferral}
-                >
-
-                  <UserPlus size={17} />
-
-                  Refer a Candidate
-
-                  <ArrowRight size={16} />
-
-                </button>
-
-
-                {/* SECONDARY */}
-
-                <button
-                  type="button"
-                  className="hero-secondary-button"
-                  onClick={() =>
-                    scrollToSection(
-                      "recent-referrals"
-                    )
-                  }
-                >
-
-                  View my referrals
-
-                  <ChevronRight size={15} />
-
-                </button>
-
-              </div>
-
-            </div>
-
-
-            {/* HERO VISUAL */}
-
-            <div className="hero-visual">
-
-              <div className="hero-visual-orbit orbit-one"></div>
-
-              <div className="hero-visual-orbit orbit-two"></div>
-
-
-              <div className="hero-visual-card">
-
-                <div className="hero-visual-icon">
-
-                  <Sparkles size={23} />
-
-                </div>
-
-
-                <div>
-
-                  <strong>
-                    AI-powered matching
-                  </strong>
-
-                  <span>
-                    Every candidate is evaluated
-                    against available opportunities.
-                  </span>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </section>
-
-
-          {/* =========================
-              OVERVIEW
-          ========================= */}
-
-          <section className="dashboard-overview">
-
-            <div className="section-heading-row">
-
-              <div>
-
-                <span className="section-label">
-                  OVERVIEW
-                </span>
-
-                <h2>
-                  Your referral activity
-                </h2>
-
-              </div>
-
-
-              <span className="section-muted">
-                Updated automatically
-              </span>
-
-            </div>
-
-
-            <div className="overview-grid">
-
-
-              {/* PROFILE */}
-
-              <article
-                className="profile-overview-card"
-                id="profile-section"
-              >
-
-                <div className="card-top-label">
-                  YOUR PROFILE
-                </div>
-
-
-                <div className="profile-overview-main">
-
-                  <div className="profile-large-avatar">
-
-                    {employee.profilePicture ? (
-                      <img
-                        src={employee.profilePicture}
-                        alt={fullName}
-                      />
-                    ) : (
-                      initials || "E"
-                    )}
-
-                    <span className="profile-online-dot"></span>
-
-                  </div>
-
-
-                  <div className="profile-overview-info">
-
-                    <div className="employee-status">
-
-                      <CheckCircle2 size={13} />
-
-                      Active employee
-
-                    </div>
-
-
-                    <h3>
-                      {fullName}
-                    </h3>
-
-
-                    <p>
-                      {employee.employeeId}
-                    </p>
-
-                  </div>
-
-                </div>
-
-
-                <div className="profile-overview-details">
-
-
-                  {/* EMAIL */}
-
-                  <div className="profile-detail">
-
-                    <div className="profile-detail-icon">
-
-                      <Mail size={14} />
-
-                    </div>
-
-
-                    <div>
-
-                      <span>
-                        WORK EMAIL
-                      </span>
-
-                      <strong>
-                        {employee.email}
-                      </strong>
-
-                    </div>
-
-                  </div>
-
-
-                  {/* ACCOUNT */}
-
-                  <div className="profile-detail">
-
-                    <div className="profile-detail-icon verified">
-
-                      <BadgeCheck size={14} />
-
-                    </div>
-
-
-                    <div>
-
-                      <span>
-                        ACCOUNT
-                      </span>
-
-                      <strong>
-                        Verified Employee
-                      </strong>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </article>
-
-
-              {/* =========================
-                  STAT 1
-              ========================= */}
-
-              <article className="metric-card">
-
-                <div className="metric-card-header">
-
-                  <div className="metric-icon blue">
-
-                    <Users size={17} />
-
-                  </div>
-
-                  <span>
-                    Total referrals
-                  </span>
-
-                </div>
-
-
-                <div className="metric-value">
-                  0
-                </div>
-
-
-                <p>
-                  Candidates you've referred
-                </p>
-
-
-                <div className="metric-bottom">
-
-                  <span>
-                    Start building your network
-                  </span>
-
-                </div>
-
-              </article>
-
-
-              {/* =========================
-                  STAT 2
-              ========================= */}
-
-              <article className="metric-card">
-
-                <div className="metric-card-header">
-
-                  <div className="metric-icon amber">
-
-                    <Clock3 size={17} />
-
-                  </div>
-
-                  <span>
-                    Pending
-                  </span>
-
-                </div>
-
-
-                <div className="metric-value">
-                  0
-                </div>
-
-
-                <p>
-                  Awaiting candidate action
-                </p>
-
-
-                <div className="metric-bottom">
-
-                  <span>
-                    Invitations in progress
-                  </span>
-
-                </div>
-
-              </article>
-
-
-              {/* =========================
-                  STAT 3
-              ========================= */}
-
-              <article className="metric-card">
-
-                <div className="metric-card-header">
-
-                  <div className="metric-icon green">
-
-                    <CheckCircle2 size={17} />
-
-                  </div>
-
-                  <span>
-                    Successful
-                  </span>
-
-                </div>
-
-
-                <div className="metric-value">
-                  0
-                </div>
-
-
-                <p>
-                  Candidates moved forward
-                </p>
-
-
-                <div className="metric-bottom">
-
-                  <span>
-                    Great referrals make impact
-                  </span>
-
-                </div>
-
-              </article>
-
-            </div>
-
-          </section>
-
-
-          {/* =========================
-              PIPELINE
-          ========================= */}
-
-          <section className="pipeline-card">
-
-            <div className="pipeline-header">
-
-              <div>
-
-                <span className="section-label">
-                  REFERRAL PIPELINE
-                </span>
-
-                <h2>
-                  Track the journey
-                </h2>
-
-                <p>
-                  Follow your candidates from referral
-                  to hiring review.
-                </p>
-
-              </div>
-
-
-              <div className="pipeline-summary">
-
-                <BarChart3 size={16} />
-
-                <span>
-                  0 active candidates
-                </span>
-
-              </div>
-
-            </div>
-
-
-            <div className="pipeline">
-
-
-              {/* STEP 1 */}
-
-              <div className="pipeline-step active">
-
-                <div className="pipeline-number">
-                  01
-                </div>
-
-                <div className="pipeline-step-content">
-
-                  <strong>
-                    Referred
-                  </strong>
-
-                  <span>
-                    You submit their details
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              <div className="pipeline-connector"></div>
-
-
-              {/* STEP 2 */}
-
-              <div className="pipeline-step">
-
-                <div className="pipeline-number">
-                  02
-                </div>
-
-                <div className="pipeline-step-content">
-
-                  <strong>
-                    Invited
-                  </strong>
-
-                  <span>
-                    Candidate receives an email
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              <div className="pipeline-connector"></div>
-
-
-              {/* STEP 3 */}
-
-              <div className="pipeline-step">
-
-                <div className="pipeline-number">
-                  03
-                </div>
-
-                <div className="pipeline-step-content">
-
-                  <strong>
-                    Submitted
-                  </strong>
-
-                  <span>
-                    Resume is uploaded
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              <div className="pipeline-connector"></div>
-
-
-              {/* STEP 4 */}
-
-              <div className="pipeline-step">
-
-                <div className="pipeline-number">
-                  04
-                </div>
-
-                <div className="pipeline-step-content">
-
-                  <strong>
-                    AI Review
-                  </strong>
-
-                  <span>
-                    Profile is analyzed
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              <div className="pipeline-connector"></div>
-
-
-              {/* STEP 5 */}
-
-              <div className="pipeline-step">
-
-                <div className="pipeline-number">
-                  05
-                </div>
-
-                <div className="pipeline-step-content">
-
-                  <strong>
-                    HR Review
-                  </strong>
-
-                  <span>
-                    HR makes the final decision
-                  </span>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </section>
-
-
-          {/* =========================
-              RECENT REFERRALS
-          ========================= */}
-
-          <section
-            className="recent-referrals-card"
-            id="recent-referrals"
-          >
-
-            <div className="recent-header">
-
-              <div>
-
-                <span className="section-label">
-                  ACTIVITY
-                </span>
-
-                <h2>
-                  Recent referrals
-                </h2>
-
-                <p>
-                  Keep track of candidates you've
-                  referred to Micron.
-                </p>
-
-              </div>
-
-
-              <button
-                type="button"
-                className="view-all-button"
-                onClick={() =>
-                  scrollToSection(
-                    "recent-referrals"
-                  )
-                }
-              >
-
-                View all
-
-                <ArrowRight size={15} />
-
-              </button>
-
-            </div>
-
-
-            {/* EMPTY STATE */}
-
-            <div className="referrals-empty-state">
-
-              <div className="empty-state-illustration">
-
-                <div className="empty-state-circle">
-
-                  <Users size={24} />
-
-                </div>
-
-                <div className="empty-state-orbit orbit-left"></div>
-
-                <div className="empty-state-orbit orbit-right"></div>
-
-              </div>
-
-
-              <h3>
-                Your referral list is empty
-              </h3>
-
-
-              <p>
-                Refer a talented person from your network
-                and their journey will appear here.
-              </p>
-
-
-              <button
-                type="button"
-                className="empty-state-button"
-                onClick={goToReferral}
-              >
-
-                <UserPlus size={15} />
-
-                Refer your first candidate
-
-                <ArrowRight size={15} />
-
-              </button>
-
-            </div>
-
-          </section>
-
-
-          {/* =========================
-              HOW IT WORKS
-          ========================= */}
-
-          <section
-            className="how-it-works-card"
-            id="how-it-works"
-          >
-
-            <div className="how-icon">
-
-              <Sparkles size={19} />
-
-            </div>
-
-
-            <div className="how-content">
-
-              <span>
-                HOW IT WORKS
-              </span>
-
-              <h3>
-                You refer. AI analyzes. HR decides.
-              </h3>
-
-              <p>
-                Submit a candidate using their basic
-                details. We'll invite them to complete
-                their profile and upload a resume. Our
-                AI analyzer evaluates their skills,
-                experience and education against available
-                roles, while HR makes the final decision.
+                Refer talented people from your
+                network and track their journey
+                through the recruitment process.
               </p>
 
             </div>
@@ -1167,33 +697,271 @@ const handleLogout = () => {
 
             <button
               type="button"
-              className="how-arrow"
-              onClick={goToReferral}
-              aria-label="Refer a candidate"
+              className="employee-primary-button"
+              onClick={() =>
+                goTo("/employee/refer")
+              }
             >
-
-              <ArrowRight size={18} />
-
+              <UserPlus size={16} />
+              Refer a Candidate
             </button>
 
           </section>
 
 
-          {/* =========================
-              FOOTER
-          ========================= */}
+          {/* AI WORKFLOW */}
 
-          <footer className="dashboard-footer">
+          <section className="employee-workflow-card">
 
-            <span>
-              micron employee referral portal
-            </span>
+            <div className="employee-workflow-icon">
+              <Sparkles size={19} />
+            </div>
 
-            <span>
-              Internal use only
-            </span>
+            <div className="employee-workflow-content">
 
-          </footer>
+              <span>
+                AI-POWERED REFERRAL PROCESS
+              </span>
+
+              <h2>
+                You refer. AI analyzes. HR decides.
+              </h2>
+
+              <p>
+                Once your candidate completes their
+                application and uploads a resume,
+                the AI analyzer evaluates their
+                profile against available jobs.
+              </p>
+
+            </div>
+
+            <div className="employee-workflow-status">
+              <span />
+              AI Ready
+            </div>
+
+          </section>
+
+
+          {/* OVERVIEW */}
+
+          <section className="employee-section">
+
+            <div className="employee-section-heading">
+
+              <div>
+
+                <span>
+                  OVERVIEW
+                </span>
+
+                <h2>
+                  Referral activity
+                </h2>
+
+              </div>
+
+              <small>
+                Your referral summary
+              </small>
+
+            </div>
+
+
+            <div className="employee-stats-grid">
+
+              <StatCard
+                icon={<Users size={17} />}
+                label="TOTAL REFERRALS"
+                value="0"
+                description="Candidates referred"
+                type="blue"
+              />
+
+              <StatCard
+                icon={<Clock3 size={17} />}
+                label="PENDING"
+                value="0"
+                description="Awaiting candidate action"
+                type="amber"
+              />
+
+              <StatCard
+                icon={<CheckCircle2 size={17} />}
+                label="SUCCESSFUL"
+                value="0"
+                description="Candidates moved forward"
+                type="green"
+              />
+
+            </div>
+
+          </section>
+
+
+          {/* TWO COLUMN */}
+
+          <div className="employee-two-column">
+
+
+            {/* RECENT REFERRALS */}
+
+            <section className="employee-panel">
+
+              <div className="employee-panel-header">
+
+                <div>
+
+                  <span>
+                    ACTIVITY
+                  </span>
+
+                  <h2>
+                    Recent referrals
+                  </h2>
+
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    goTo("/employee/referrals")
+                  }
+                >
+                  View all
+                  <ChevronRight size={13} />
+                </button>
+
+              </div>
+
+
+              <div className="employee-empty">
+
+                <div className="employee-empty-icon">
+                  <Users size={20} />
+                </div>
+
+                <h3>
+                  No referrals yet
+                </h3>
+
+                <p>
+                  Candidates you refer will
+                  appear here.
+                </p>
+
+                <button
+                  type="button"
+                  className="employee-secondary-button"
+                  onClick={() =>
+                    goTo("/employee/refer")
+                  }
+                >
+                  <UserPlus size={14} />
+                  Refer your first candidate
+                </button>
+
+              </div>
+
+            </section>
+
+
+            {/* PIPELINE */}
+
+            <section className="employee-panel">
+
+              <div className="employee-panel-header">
+
+                <div>
+
+                  <span>
+                    WORKFLOW
+                  </span>
+
+                  <h2>
+                    Referral pipeline
+                  </h2>
+
+                </div>
+
+                <Sparkles
+                  size={17}
+                  className="employee-panel-header-icon"
+                />
+
+              </div>
+
+
+              <div className="employee-pipeline">
+
+                <PipelineStep
+                  number="01"
+                  title="Referred"
+                  text="Candidate details submitted"
+                  active
+                />
+
+                <PipelineStep
+                  number="02"
+                  title="Invited"
+                  text="Application invitation sent"
+                />
+
+                <PipelineStep
+                  number="03"
+                  title="Submitted"
+                  text="Profile and resume received"
+                />
+
+                <PipelineStep
+                  number="04"
+                  title="AI Review"
+                  text="Resume and skills analyzed"
+                />
+
+                <PipelineStep
+                  number="05"
+                  title="HR Review"
+                  text="Recruiter makes decision"
+                />
+
+              </div>
+
+            </section>
+
+          </div>
+
+
+          {/* HOW IT WORKS */}
+
+          <section className="employee-how-card">
+
+            <div className="employee-how-icon">
+              <FileText size={18} />
+            </div>
+
+            <div>
+
+              <span>
+                HOW IT WORKS
+              </span>
+
+              <h2>
+                A simple referral process
+              </h2>
+
+              <p>
+                Refer a candidate using their basic
+                details. The candidate completes the
+                application and uploads their resume.
+                AI performs the analysis and HR makes
+                the final recruitment decision.
+              </p>
+
+            </div>
+
+          </section>
 
         </main>
 
@@ -1202,5 +970,85 @@ const handleLogout = () => {
     </div>
   );
 }
+
+
+/* =========================================================
+   STAT CARD
+========================================================= */
+
+const StatCard = ({
+  icon,
+  label,
+  value,
+  description,
+  type,
+}) => {
+  return (
+    <article className="employee-stat-card">
+
+      <div className="employee-stat-header">
+
+        <div
+          className={`employee-stat-icon ${type}`}
+        >
+          {icon}
+        </div>
+
+        <span>
+          {label}
+        </span>
+
+      </div>
+
+      <strong>
+        {value}
+      </strong>
+
+      <p>
+        {description}
+      </p>
+
+    </article>
+  );
+};
+
+
+/* =========================================================
+   PIPELINE STEP
+========================================================= */
+
+const PipelineStep = ({
+  number,
+  title,
+  text,
+  active = false,
+}) => {
+  return (
+    <div
+      className={`employee-pipeline-step ${
+        active ? "active" : ""
+      }`}
+    >
+
+      <div className="employee-pipeline-number">
+        {number}
+      </div>
+
+      <div className="employee-pipeline-text">
+
+        <strong>
+          {title}
+        </strong>
+
+        <span>
+          {text}
+        </span>
+
+      </div>
+
+    </div>
+  );
+};
+
 
 export default EmployeeDashboard;
