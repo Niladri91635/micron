@@ -1,0 +1,11 @@
+import { ArrowLeft, CheckCircle2, Clock3, FileText, Mail, Phone, UserRound } from "lucide-react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import "./ReferralDetails.css";
+
+const fallback = { id: "REF-1001", candidateName: "Candidate", jobTitle: "Role", status: "UNDER_REVIEW", candidateEmail: "candidate@example.com", candidatePhone: "Not provided", note: "Referral details will appear here once the backend returns the referral record." };
+const statusLabels = { SUBMITTED: "Submitted", UNDER_REVIEW: "Under review", SHORTLISTED: "Shortlisted", INTERVIEW: "Interview", HIRED: "Hired", REJECTED: "Not selected" };
+function ReferralDetails(){
+  const navigate=useNavigate(); const {state}=useLocation(); const {id}=useParams(); const referral=state?.referral || {...fallback,id:decodeURIComponent(id||fallback.id)};
+  return <main className="referral-details-page"><header className="referral-details-header"><button onClick={()=>navigate("/employee/referrals")}><ArrowLeft size={16}/> My referrals</button><div><span>M</span> micron</div></header><section className="referral-details-shell"><span className="referral-details-eyebrow">REFERRAL {referral.id}</span><h1>{referral.candidateName}</h1><p className="referral-details-role">{referral.jobTitle}</p><div className="referral-detail-status"><CheckCircle2 size={16}/>{statusLabels[referral.status] || referral.status || "Submitted"}</div><section className="referral-details-card"><div className="detail-grid"><div><span><Mail size={14}/> EMAIL</span><strong>{referral.candidateEmail || "Not provided"}</strong></div><div><span><Phone size={14}/> PHONE</span><strong>{referral.candidatePhone || "Not provided"}</strong></div><div><span><Clock3 size={14}/> LAST UPDATE</span><strong>{referral.updatedAt || "Recent"}</strong></div><div><span><UserRound size={14}/> REFERRAL ID</span><strong>{referral.id}</strong></div></div><div className="detail-note"><span><FileText size={15}/> MESSAGE TO HR</span><p>{referral.note || "No message was added to this referral."}</p></div></section><button className="details-back-button" onClick={()=>navigate("/employee/dashboard")}>Back to dashboard</button></section></main>
+}
+export default ReferralDetails;

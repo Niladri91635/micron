@@ -1,0 +1,2 @@
+/* HR authentication reuses the employee portal's visual system. */
+.registration-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.registration-grid .full-field{grid-column:1/-1}.register-form .form-field{min-width:0}.register-form .input-wrapper input{min-width:0}.register-form .auth-login-options{margin-top:14px}@media(max-width:560px){.registration-grid{grid-template-columns:1fr}.registration-grid .full-field{grid-column:auto}}
